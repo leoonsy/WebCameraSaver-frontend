@@ -8,8 +8,6 @@ const setToken = (token: string) => {
   api.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
-type Params = Record<string, unknown>;
-
 export const auth = async (login: string, password: string) => {
   const response = await api.post<{
     token: string;
