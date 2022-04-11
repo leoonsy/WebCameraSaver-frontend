@@ -40,7 +40,6 @@ const router = createRouter({
 const { isAuthenticated } = authStore;
 
 router.beforeEach((to) => {
-  console.log(isAuthenticated.value);
   if (to.name === 'SignIn' && isAuthenticated.value) {
     return { path: '/' };
   }
