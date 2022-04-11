@@ -1,0 +1,73 @@
+stages:
+  - build
+  - build-docker
+  - deploy
+
+.job_build_node:
+  stage: build
+  image: node:17-alpine
+  tags: [docker]
+  script:
+    - npm ci
+    - npm run lint
+    - npm run $BUILD_NPM_COMMAND
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - node_modules/
+  artifacts:
+    expire_in: 2 hrs
+    paths:
+      - dist
+
+job_build_node_dev:
+  extends: .job_build_node
+  variables:
+    BUILD_NPM_COMMAND: build:dev
+  except:
+    - /^(master|release.*|v\d+\.\d+\.\d+)$/
+
+job_build_node_prod:
+  extends: .job_build_node
+  variables:
+    BUILD_NPM_COMMAND: build
+  only:
+    - /^(master|release.*|v\d+\.\d+\.\d+)$/
+
+.build_docker_template: &build_docker_template
+  stage: build-docker
+  tags: [docker]
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_BUILD_TOKEN $CI_REGISTRY
+  script:
+    - cp -r ./dist ./docker/dist
+    - GIT_COMMIT_REF_SLUG=$(echo $CI_COMMIT_REF_NAME | sed "s/[^a-zA-Z0-9\-_.]/-/g")
+    - docker build ./docker
+        --build-arg build_output_path=dist
+        -t $CI_REGISTRY_IMAGE:$GIT_COMMIT_REF_SLUG
+    - docker push $CI_REGISTRY_IMAGE:$GIT_COMMIT_REF_SLUG
+
+job_manual_build_docker:
+  <<: *build_docker_template
+  except:
+    - /^(develop|release.*|v\d+\.\d+\.\d+)$/
+  when: manual
+
+job_auto_build_docker:
+  <<: *build_docker_template
+  only:
+    - /^(develop|release.*|v\d+\.\d+\.\d+)$/
+
+auto_deploy_backend:
+  stage: deploy
+  variables:
+    TRIGGER_ENVIRONMENT: dev_cloud_backend
+  trigger:
+    project: videos/videos.docker
+    branch: develop
+    strategy: depend
+  only:
+    - develop

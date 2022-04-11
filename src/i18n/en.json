@@ -1,0 +1,9 @@
+{
+  "errors": {
+    "400": "Data entered incorrectly.",
+    "404": "Not found",
+    "409": "Conflict: value is already exists.",
+    "unknownError": "An unknown error has occurred.",
+    "requiredInput": "Please input the field."
+  }
+}
