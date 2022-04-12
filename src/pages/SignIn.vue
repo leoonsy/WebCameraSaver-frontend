@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import useFormDataValidation from '@/composables/useFormDataValidation';
+import { useFormDataValidation } from '@/composables/formDataValidation';
 import { requiredValidator } from '@/utils/validators';
 import LanguageSelection from '@/components/LanguageSelection.vue';
 import authStore from '@/store/auth';

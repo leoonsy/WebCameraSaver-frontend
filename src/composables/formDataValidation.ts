@@ -1,7 +1,7 @@
 import { type Ref, ref, watch } from 'vue';
 import useForm, { type Props } from 'ant-design-vue/lib/form/useForm';
 
-export default (data: Props | Ref<Props>, rules: Props) => {
+export const useFormDataValidation = (data: Props | Ref<Props>, rules: Props) => {
   const valid = ref(false);
 
   const { validate } = useForm(data, rules);

@@ -1,5 +1,7 @@
 import { computed, ref } from 'vue';
-import api, { createUser, auth, logout } from '@/api';
+import api, {
+  createUser, auth, logout, changePassword,
+} from '@/api';
 import storage from '@/utils/storage';
 
 type User = {
@@ -37,6 +39,10 @@ const register = async (login: string, password: string) => {
   setUser({ login, token });
 };
 
+const updatePassword = async (oldPassword: string, newPassword: string) => {
+  await changePassword(oldPassword, newPassword);
+};
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -55,4 +61,5 @@ export default {
   signIn,
   signOut,
   register,
+  updatePassword,
 };

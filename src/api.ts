@@ -28,6 +28,10 @@ export const createUser = async (login: string, password: string) => {
   return response.data;
 };
 
+export const changePassword = async (oldPassword: string, newPassword: string) => {
+  await api.put('users/password', { oldPassword, newPassword });
+};
+
 const { isAxiosError } = axios;
 
 export {

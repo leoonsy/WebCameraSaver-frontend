@@ -18,7 +18,7 @@ const router = createRouter({
       component: () => import('@/pages/Settings.vue'),
     },
     {
-      path: '/signin',
+      path: '/signIn',
       name: 'SignIn',
       component: () => import('@/pages/SignIn.vue'),
       props: true,
