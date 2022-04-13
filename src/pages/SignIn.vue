@@ -4,7 +4,7 @@ import { reactive } from 'vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { useFormDataValidation } from '@/composables/formDataValidation';
-import { requiredValidator } from '@/utils/validators';
+import { loginValidator, passwordValidator } from '@/utils/validators';
 import LanguageSelection from '@/components/LanguageSelection.vue';
 import authStore from '@/store/auth';
 import xhrErrorMessage from '@/utils/xhrErrorMessage';
@@ -14,8 +14,8 @@ const { t } = useI18n();
 const router = useRouter();
 
 const rules = reactive({
-  login: [{ validator: requiredValidator, trigger: 'change' }],
-  password: [{ validator: requiredValidator, trigger: 'change' }],
+  login: [{ validator: loginValidator, trigger: 'change' }],
+  password: [{ validator: passwordValidator, trigger: 'change' }],
 });
 
 const model = reactive({
@@ -86,6 +86,7 @@ const register = async () => {
       <a-space direction="vertical">
         <a-button
           type="primary"
+          html-type="submit"
           :disabled="!valid"
           @click="signIn"
         >

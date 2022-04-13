@@ -1,7 +1,5 @@
 import { computed, ref } from 'vue';
-import api, {
-  createUser, auth, logout, changePassword,
-} from '@/api';
+import api, { createUser, auth, changePassword } from '@/api';
 import storage from '@/utils/storage';
 
 type User = {
@@ -28,8 +26,7 @@ const signIn = async (login: string, password: string) => {
   setUser({ login, token });
 };
 
-const signOut = async () => {
-  await logout();
+const signOut = () => {
   storage.remove(USER_KEY);
   window.location.reload();
 };
@@ -47,7 +44,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      await signOut();
+      signOut();
       return;
     }
 

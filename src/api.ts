@@ -32,6 +32,14 @@ export const changePassword = async (currentPassword: string, newPassword: strin
   await api.put('users/password', { currentPassword, newPassword });
 };
 
+export const uploadVideo = async (video: FormData) => {
+  await api.post('video', video, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
 const { isAxiosError } = axios;
 
 export {

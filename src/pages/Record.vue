@@ -4,8 +4,12 @@ import { onUnmounted, ref } from 'vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
 import { message } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
+import { v4 as uuidv4 } from 'uuid';
+import videoStore from '@/store/video';
+import xhrErrorMessage from '@/utils/xhrErrorMessage';
 
 const { t } = useI18n();
+const { uploadVideoToServer } = videoStore;
 
 let recorder: null | RecordRTC = null;
 let stream: null | MediaStream = null;
@@ -15,6 +19,7 @@ const video = ref(null as unknown as HTMLVideoElement);
 const ready = ref(false);
 const recording = ref(false);
 const loadingUserMedia = ref(false);
+const saving = ref(false);
 
 const setReady = () => {
   ready.value = true;
@@ -65,6 +70,29 @@ const stopRecording = () => {
   });
 };
 
+const saveToServer = async () => {
+  if (!blob.value) {
+    return;
+  }
+
+  const file = new File([blob.value], uuidv4(), {
+    type: 'video/webm',
+  });
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    saving.value = true;
+    await uploadVideoToServer(formData);
+    message.success(t('save.success'));
+  } catch (e) {
+    message.error(xhrErrorMessage(e));
+  } finally {
+    saving.value = false;
+  }
+};
+
 onUnmounted(stopRecording);
 </script>
 
@@ -77,7 +105,7 @@ onUnmounted(stopRecording);
       <a-space>
         <a-button
           type="primary"
-          :disabled="recording"
+          :disabled="recording || saving"
           @click="startRecording"
         >
           {{ t('record') }}
@@ -85,7 +113,7 @@ onUnmounted(stopRecording);
 
         <a-button
           type="primary"
-          :disabled="!recording"
+          :disabled="!recording || loadingUserMedia"
           danger
           @click="stopRecording"
         >
@@ -93,10 +121,17 @@ onUnmounted(stopRecording);
         </a-button>
 
         <a-button
-          :disabled="!blob"
+          :disabled="!blob || recording"
           @click="saveLocal"
         >
           {{ t('save.local') }}
+        </a-button>
+
+        <a-button
+          :disabled="!blob || recording || saving"
+          @click="saveToServer"
+        >
+          {{ t('save.remote') }}
         </a-button>
       </a-space>
     </template>
@@ -133,6 +168,8 @@ record: Запись
 stop: Стоп
 save:
   local: Сохранить локально
+  remote: Сохранить на сервер
+  success: Видео успешно сохранено
 </i18n>
 
 <i18n locale="en">
@@ -143,4 +180,6 @@ record: Record
 stop: Stop
 save:
   local: Save locally
+  remote: Save to server
+  success: Video saved successfully
 </i18n>

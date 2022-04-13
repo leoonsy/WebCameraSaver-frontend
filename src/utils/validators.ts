@@ -10,3 +10,21 @@ export const requiredValidator = async (
     throw new Error(t('errors.requiredInput'));
   }
 };
+
+export const loginValidator = async (
+  rule: Record<string, unknown>,
+  value: string,
+) => {
+  if (!/^[a-zA-Z0-9]+$/.test(value)) {
+    throw new Error(t('errors.login'));
+  }
+};
+
+export const passwordValidator = async (
+  rule: Record<string, unknown>,
+  value: string,
+) => {
+  if (value.length < 5) {
+    throw new Error(t('errors.password'));
+  }
+};

@@ -4,6 +4,8 @@
     "404": "Not found",
     "409": "Conflict: value is already exists.",
     "unknownError": "An unknown error has occurred.",
-    "requiredInput": "Please input the field."
+    "requiredInput": "Please input the field.",
+    "login": "The login must consist of the Latin alphabet and numbers.",
+    "password:": "Password length is at least 5 characters."
   }
 }
