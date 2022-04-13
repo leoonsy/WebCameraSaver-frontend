@@ -6,7 +6,7 @@ import { requiredValidator } from '@/utils/validators';
 import { useFormDataValidation } from '@/composables/formDataValidation';
 import { message } from 'ant-design-vue';
 import xhrErrorMessage from '@/utils/xhrErrorMessage';
-import { AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 
 const { t } = useI18n();
 const { updatePassword } = authStore;

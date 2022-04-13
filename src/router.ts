@@ -7,10 +7,15 @@ const router = createRouter({
   sensitive: true,
   routes: [
     {
+      path: '/record',
+      name: 'Record',
+      component: () => import('@/pages/Record.vue'),
+      alias: '/',
+    },
+    {
       path: '/video',
       name: 'Video',
       component: () => import('@/pages/Video.vue'),
-      alias: '/',
     },
     {
       path: '/settings',

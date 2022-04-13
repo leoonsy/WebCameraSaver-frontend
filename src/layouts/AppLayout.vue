@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter, useRoute } from 'vue-router';
-import { UserOutlined, UnorderedListOutlined } from '@ant-design/icons-vue';
+import { UserOutlined, UnorderedListOutlined, CameraOutlined } from '@ant-design/icons-vue';
 import authStore from '@/store/auth';
 import LanguageSelection from '@/components/LanguageSelection.vue';
 
@@ -15,6 +15,7 @@ const route = useRoute();
 const collapsed = ref(false);
 
 const menu = {
+  Record: CameraOutlined,
   Video: UnorderedListOutlined,
   Settings: UserOutlined,
 };
@@ -127,6 +128,7 @@ const navigate = (name: string) => { router.push({ name }); };
 signout: Выйти
 welcome: Добро пожаловать, {0}
 menu:
+  Record: Запись
   Video: Видео
   Settings: Настройки
 </i18n>
@@ -135,6 +137,7 @@ menu:
 signout: Sign out
 welcome: Welcome, {0}
 menu:
+  Record: Record
   Video: Video
   Settings: Settings
 </i18n>
