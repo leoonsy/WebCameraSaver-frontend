@@ -39,8 +39,8 @@ const register = async (login: string, password: string) => {
   setUser({ login, token });
 };
 
-const updatePassword = async (oldPassword: string, newPassword: string) => {
-  await changePassword(oldPassword, newPassword);
+const updatePassword = async (currentPassword: string, newPassword: string) => {
+  await changePassword(currentPassword, newPassword);
 };
 
 api.interceptors.response.use(

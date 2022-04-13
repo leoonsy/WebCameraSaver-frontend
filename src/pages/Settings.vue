@@ -12,12 +12,12 @@ const { t } = useI18n();
 const { updatePassword } = authStore;
 
 const rules = reactive({
-  oldPassword: [{ validator: requiredValidator, trigger: 'change' }],
+  currentPassword: [{ validator: requiredValidator, trigger: 'change' }],
   newPassword: [{ validator: requiredValidator, trigger: 'change' }],
 });
 
 const model = reactive({
-  oldPassword: '',
+  currentPassword: '',
   newPassword: '',
 });
 
@@ -25,8 +25,10 @@ const { valid } = useFormDataValidation(model, rules);
 
 const save = async () => {
   try {
-    await updatePassword(model.oldPassword, model.newPassword);
+    await updatePassword(model.currentPassword, model.newPassword);
     message.success(t('success'));
+    model.currentPassword = '';
+    model.newPassword = '';
   } catch (e) {
     if ((e as AxiosError).response?.status === 404) {
       message.error(t('incorrect'));
@@ -43,15 +45,15 @@ const save = async () => {
     :class="$style.card"
   >
     <a-form
-      :label-col="{ style: { width: '115px' } }"
+      :label-col="{ style: { width: '120px' } }"
       :model="model"
       :rules="rules"
     >
       <a-form-item
-        :label="t('password.old')"
+        :label="t('password.current')"
         :has-feedback="true"
       >
-        <a-input-password v-model:value="model.oldPassword" />
+        <a-input-password v-model:value="model.currentPassword" />
       </a-form-item>
 
       <a-form-item
@@ -87,7 +89,7 @@ const save = async () => {
 <i18n locale="ru">
 title: Настройки профиля
 password:
-  old: Старый пароль
+  current: Текущий пароль
   new: Новый пароль
 save: Сохранить
 success: Пароль успешно изменен
@@ -97,7 +99,7 @@ incorrect: Неверный старый пароль
 <i18n locale="en">
 title: Profile settings
 password:
-  old: Old password
+  current: Current password
   new: New password
 save: Save
 success: Password changed successfully

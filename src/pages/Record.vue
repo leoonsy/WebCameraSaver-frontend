@@ -137,7 +137,7 @@ save:
 
 <i18n locale="en">
 recording:
-  title: Recording from Web Camera
+  title: Recording from web-camera
   error: Required rights not granted
 record: Record
 stop: Stop
