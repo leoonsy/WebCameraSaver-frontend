@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n';
 import { v4 as uuidv4 } from 'uuid';
 import videoStore from '@/store/video';
 import xhrErrorMessage from '@/utils/xhrErrorMessage';
-import { filenameValidator, requiredValidator } from '@/utils/validators';
+import { filenameValidator } from '@/utils/validators';
 
 const { t } = useI18n();
 const { uploadVideoToServer } = videoStore;
