@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import RecordRTC, { invokeSaveAsDialog } from 'recordrtc';
-import { onUnmounted, ref } from 'vue';
+import { onUnmounted, reactive, ref } from 'vue';
 import BaseSpinner from '@/components/BaseSpinner.vue';
 import { message } from 'ant-design-vue';
 import { useI18n } from 'vue-i18n';
 import { v4 as uuidv4 } from 'uuid';
 import videoStore from '@/store/video';
 import xhrErrorMessage from '@/utils/xhrErrorMessage';
+import { filenameValidator, requiredValidator } from '@/utils/validators';
 
 const { t } = useI18n();
 const { uploadVideoToServer } = videoStore;
@@ -21,6 +22,14 @@ const recording = ref(false);
 const loadingUserMedia = ref(false);
 const saving = ref(false);
 
+const model = reactive({
+  filename: '',
+});
+
+const rules = reactive({
+  filename: [{ validator: filenameValidator, trigger: 'change' }],
+});
+
 const setReady = () => {
   ready.value = true;
   loadingUserMedia.value = false;
@@ -28,7 +37,7 @@ const setReady = () => {
 
 const saveLocal = () => {
   if (blob.value) {
-    invokeSaveAsDialog(blob.value);
+    invokeSaveAsDialog(blob.value, model.filename ? `${model.filename}.webm` : undefined);
   }
 };
 
@@ -75,7 +84,7 @@ const saveToServer = async () => {
     return;
   }
 
-  const file = new File([blob.value], uuidv4(), {
+  const file = new File([blob.value], model.filename || uuidv4(), {
     type: 'video/webm',
   });
 
@@ -102,38 +111,64 @@ onUnmounted(stopRecording);
     :class="$style.card"
   >
     <template #extra>
-      <a-space>
-        <a-button
-          type="primary"
-          :disabled="recording || saving"
-          @click="startRecording"
-        >
-          {{ t('record') }}
-        </a-button>
+      <a-form
+        :model="model"
+        :rules="rules"
+        :class="$style.form"
+        layout="inline"
+      >
+        <a-form-item>
+          <a-button
+            type="primary"
+            :disabled="recording || saving"
+            @click="startRecording"
+          >
+            {{ t('record') }}
+          </a-button>
+        </a-form-item>
 
-        <a-button
-          type="primary"
-          :disabled="!recording || loadingUserMedia"
-          danger
-          @click="stopRecording"
-        >
-          {{ t('stop') }}
-        </a-button>
+        <a-form-item>
+          <a-button
+            type="primary"
+            :disabled="!recording || loadingUserMedia"
+            danger
+            @click="stopRecording"
+          >
+            {{ t('stop') }}
+          </a-button>
+        </a-form-item>
 
-        <a-button
-          :disabled="!blob || recording"
-          @click="saveLocal"
+        <a-form-item
+          :has-feedback="true"
+          name="filename"
+          :class="$style.filename"
         >
-          {{ t('save.local') }}
-        </a-button>
+          <a-input
+            v-model:value="model.filename"
+            :disabled="saving"
+            placeholder="Имя файла"
+          />
+        </a-form-item>
 
-        <a-button
-          :disabled="!blob || recording || saving"
-          @click="saveToServer"
-        >
-          {{ t('save.remote') }}
-        </a-button>
-      </a-space>
+        <a-form-item>
+          <a-button
+            :disabled="!blob || recording"
+            @click="saveLocal"
+          >
+            {{ t('save.local') }}
+          </a-button>
+        </a-form-item>
+
+        <a-form-item>
+          <a-button
+            :disabled="!blob || recording"
+            :loading="saving"
+            @click="saveToServer"
+          >
+            {{ t('save.remote') }}
+          </a-button>
+        </a-form-item>
+      </a-form>
     </template>
 
     <BaseSpinner v-if="loadingUserMedia && !ready" />
@@ -156,7 +191,19 @@ onUnmounted(stopRecording);
 }
 
 .card {
-  width: 800px;
+  width: 1000px;
+}
+
+.card :global(.ant-card-head-wrapper) {
+  align-items: flex-start;
+}
+
+.filename {
+  width: 160px;
+}
+
+.form :global(.ant-form-item) {
+  margin-right: 8px;
 }
 </style>
 

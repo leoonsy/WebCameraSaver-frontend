@@ -28,3 +28,12 @@ export const passwordValidator = async (
     throw new Error(t('errors.password'));
   }
 };
+
+export const filenameValidator = async (
+  rule: Record<string, unknown>,
+  value: string,
+) => {
+  if (value && !/^[a-z0-9-]+$/.test(value)) {
+    throw new Error(t('errors.filename'));
+  }
+};

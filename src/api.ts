@@ -40,6 +40,20 @@ export const uploadVideo = async (video: FormData) => {
   });
 };
 
+export const readVideoFiles = async () => {
+  const response = await api.get<{
+    name: string;
+    size: number;
+  }[]>('video');
+
+  return response.data;
+};
+
+export const saveVideoFile = async (name: string) => {
+  const response = await api.get(`video/${name}`, { responseType: 'blob' });
+  return response.data;
+};
+
 const { isAxiosError } = axios;
 
 export {

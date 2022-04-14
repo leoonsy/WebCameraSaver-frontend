@@ -52,6 +52,7 @@ const save = async () => {
       <a-form-item
         :label="t('password.current')"
         :has-feedback="true"
+        name="currentPassword"
       >
         <a-input-password v-model:value="model.currentPassword" />
       </a-form-item>
@@ -59,6 +60,7 @@ const save = async () => {
       <a-form-item
         :label="t('password.new')"
         :has-feedback="true"
+        name="newPassword"
       >
         <a-input-password v-model:value="model.newPassword" />
       </a-form-item>
