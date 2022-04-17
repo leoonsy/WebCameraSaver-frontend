@@ -106,11 +106,8 @@ onUnmounted(stopRecording);
 </script>
 
 <template>
-  <a-card
-    :title="t('recording.title')"
-    :class="$style.card"
-  >
-    <template #extra>
+  <a-card :class="$style.card">
+    <template #title>
       <a-form
         :model="model"
         :rules="rules"
@@ -191,11 +188,7 @@ onUnmounted(stopRecording);
 }
 
 .card {
-  width: 1000px;
-}
-
-.card :global(.ant-card-head-wrapper) {
-  align-items: flex-start;
+  max-width: 1000px;
 }
 
 .filename {
@@ -203,7 +196,11 @@ onUnmounted(stopRecording);
 }
 
 .form :global(.ant-form-item) {
-  margin-right: 8px;
+  margin-right: 0;
+}
+
+.form {
+  gap: 8px;
 }
 </style>
 

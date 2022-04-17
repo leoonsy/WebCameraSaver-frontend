@@ -80,7 +80,7 @@ const save = async () => {
 
 <style module>
 .card {
-  width: 400px;
+  max-width: 400px;
 }
 
 .right {

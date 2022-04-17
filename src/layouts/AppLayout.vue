@@ -109,6 +109,7 @@ const navigate = (name: string) => { router.push({ name }); };
 .sider {
   position: fixed;
   left: 0;
+  z-index: 999;
   height: 100vh;
 }
 
