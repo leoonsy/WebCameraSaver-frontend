@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import {
+  deleteVideoFile,
   readVideoFiles, saveVideoFile, uploadVideo,
 } from '@/api';
 
@@ -30,9 +31,15 @@ const downloadVideoFile = async (name: string) => {
   a.click();
 };
 
+const removeVideoVile = async (name: string) => {
+  await deleteVideoFile(name);
+  videoFiles.value = videoFiles.value.filter((entry) => entry.name !== name);
+};
+
 export default {
   videoFiles,
   getVideoFiles,
   uploadVideoToServer,
   downloadVideoFile,
+  removeVideoVile,
 };

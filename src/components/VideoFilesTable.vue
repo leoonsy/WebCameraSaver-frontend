@@ -2,15 +2,21 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { VideoFile } from '@/store/video';
-import { SaveTwoTone } from '@ant-design/icons-vue';
+import { SaveTwoTone, DeleteTwoTone } from '@ant-design/icons-vue';
 
 defineProps<{
   entries: Readonly<VideoFile[]>;
   loading?: boolean;
   downloadNames: Record<string, boolean>;
+  deleteNames: Record<string, boolean>;
 }>();
 
-defineEmits<{(e: 'save', name: string): void }>();
+type Emits = {
+  (e: 'save', name: string): void;
+  (e: 'delete', name: string): void
+}
+
+defineEmits<Emits>();
 
 const { t, n } = useI18n();
 
@@ -42,24 +48,35 @@ const columns = computed(() => [
     :pagination="false"
   >
     <template #edit="{ record: { name } }">
-      <a-tooltip placement="left">
-        <template #title>
-          <span v-t="'save'" />
-        </template>
+      <a-space>
+        <a-spin
+          v-if="downloadNames[name]"
+          :class="$style.spin"
+          size="small"
+        />
 
-        <a-space>
-          <a-spin
-            v-if="downloadNames[name]"
-            :class="$style.spin"
-            size="small"
-          />
+        <a-tooltip placement="left">
+          <template #title>
+            <span v-t="'save'" />
+          </template>
 
           <SaveTwoTone
             :class="[$style.icon, { [$style.icon_disabled]: downloadNames[name] }]"
             @click="$emit('save', name)"
           />
-        </a-space>
-      </a-tooltip>
+        </a-tooltip>
+
+        <a-tooltip placement="left">
+          <template #title>
+            <span v-t="'delete'" />
+          </template>
+
+          <DeleteTwoTone
+            :class="[$style.icon, { [$style.icon_disabled]: deleteNames[name] }]"
+            @click="$emit('delete', name)"
+          />
+        </a-tooltip>
+      </a-space>
     </template>
   </a-table>
 </template>
@@ -91,11 +108,12 @@ name: Название
 size: Размер
 kb: '{0} килобайт'
 save: Сохранить локально
+delete: Удалить файл
 </i18n>
 
 <i18n locale="en">
 name: Name
 size: Size
 kb: '{0} kilobytes'
-save: Save locally
+delete: Delete file
 </i18n>

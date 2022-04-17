@@ -5,13 +5,16 @@ import VideoFilesTable from '@/components/VideoFilesTable.vue';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { useI18n } from 'vue-i18n';
 
-const { videoFiles, getVideoFiles, downloadVideoFile } = videoStore;
+const {
+  videoFiles, getVideoFiles, downloadVideoFile, removeVideoVile,
+} = videoStore;
 useI18n();
 
 getVideoFiles();
 
 const loading = ref(false);
 const downloadNames = reactive<Record<string, boolean>>({});
+const deleteNames = reactive<Record<string, boolean>>({});
 const fetch = async () => {
   loading.value = true;
   await getVideoFiles();
@@ -22,6 +25,12 @@ const download = async (name: string) => {
   downloadNames[name] = true;
   await downloadVideoFile(name);
   delete downloadNames[name];
+};
+
+const deleteFile = async (name: string) => {
+  deleteNames[name] = true;
+  await removeVideoVile(name);
+  delete deleteNames[name];
 };
 fetch();
 </script>
@@ -52,7 +61,9 @@ fetch();
       :entries="videoFiles"
       :loading="loading"
       :download-names="downloadNames"
+      :delete-names="deleteNames"
       @save="download"
+      @delete="deleteFile"
     />
   </a-space>
 </template>

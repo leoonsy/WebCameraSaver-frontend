@@ -54,6 +54,10 @@ export const saveVideoFile = async (name: string) => {
   return response.data;
 };
 
+export const deleteVideoFile = async (name: string) => {
+  await api.delete(`video/${name}`);
+};
+
 const { isAxiosError } = axios;
 
 export {
