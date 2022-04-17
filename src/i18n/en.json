@@ -5,8 +5,8 @@
     "409": "Conflict: value is already exists.",
     "unknownError": "An unknown error has occurred.",
     "requiredInput": "Please input the field.",
-    "login": "The login must consist of the Latin alphabet and numbers.",
+    "login": "The login must consist of the Latin alphabet or numbers.",
     "password:": "Password length is at least 5 characters.",
-    "filename": "Filename must consist of the Latin alphabet and numbers."
+    "filename": "Filename must consist of the Latin alphabet or numbers."
   }
 }

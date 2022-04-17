@@ -33,7 +33,7 @@ export const filenameValidator = async (
   rule: Record<string, unknown>,
   value: string,
 ) => {
-  if (value && !/^[a-z0-9-]+$/.test(value)) {
+  if (value && !/^[a-zA-Zа-яА-Яё0-9-]+$/.test(value)) {
     throw new Error(t('errors.filename'));
   }
 };
