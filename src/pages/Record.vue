@@ -183,12 +183,12 @@ onUnmounted(stopRecording);
 </template>
 
 <style module>
-.video {
-  width: 100%;
+.card {
+  display: inline-block;
 }
 
-.card {
-  max-width: 1000px;
+.video {
+  width: 100%;
 }
 
 .filename {
