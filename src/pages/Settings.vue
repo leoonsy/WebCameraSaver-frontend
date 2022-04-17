@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { reactive } from 'vue';
 import authStore from '@/store/auth';
-import { requiredValidator } from '@/utils/validators';
+import { passwordValidator } from '@/utils/validators';
 import { useFormDataValidation } from '@/composables/formDataValidation';
 import { message } from 'ant-design-vue';
 import xhrErrorMessage from '@/utils/xhrErrorMessage';
@@ -12,8 +12,8 @@ const { t } = useI18n();
 const { updatePassword } = authStore;
 
 const rules = reactive({
-  currentPassword: [{ validator: requiredValidator, trigger: 'change' }],
-  newPassword: [{ validator: requiredValidator, trigger: 'change' }],
+  currentPassword: [{ validator: passwordValidator, trigger: 'change' }],
+  newPassword: [{ validator: passwordValidator, trigger: 'change' }],
 });
 
 const model = reactive({
