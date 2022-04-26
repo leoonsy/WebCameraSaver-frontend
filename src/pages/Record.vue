@@ -143,7 +143,7 @@ onUnmounted(stopRecording);
           <a-input
             v-model:value="model.filename"
             :disabled="saving"
-            placeholder="Имя файла"
+            :placeholder="t('filename')"
           />
         </a-form-item>
 
@@ -214,6 +214,7 @@ save:
   local: Сохранить локально
   remote: Сохранить на сервер
   success: Видео успешно сохранено
+filename: Имя файла
 </i18n>
 
 <i18n locale="en">
@@ -226,4 +227,5 @@ save:
   local: Save locally
   remote: Save to server
   success: Video saved successfully
+filename: File name
 </i18n>
