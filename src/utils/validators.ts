@@ -24,7 +24,7 @@ export const passwordValidator = async (
   rule: Record<string, unknown>,
   value: string,
 ) => {
-  if (value.length < 5) {
+  if (value.length < 6) {
     throw new Error(t('errors.password'));
   }
 };
